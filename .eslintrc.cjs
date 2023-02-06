@@ -18,5 +18,8 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:prettier/recommended'
-  ]
+  ],
+  rules: {
+    'react/prop-types': 'off'
+  }
 }
