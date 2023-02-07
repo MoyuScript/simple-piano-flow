@@ -1,34 +1,3 @@
-# simple-piano-flow
+# 一个简单的钢 MIDI 可视化
 
-An Electron application with React
-
-## Recommended IDE Setup
-
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-
-## Project Setup
-
-### Install
-
-```bash
-$ npm install
-```
-
-### Development
-
-```bash
-$ npm run dev
-```
-
-### Build
-
-```bash
-# For windows
-$ npm run build:win
-
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
-```
+钢琴流的 MIDI 可视化，这个工程只是试试水，不接受任何 Issues/PRs

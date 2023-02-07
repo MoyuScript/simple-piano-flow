@@ -1,9 +1,8 @@
 import * as PIXI from 'pixi.js'
 
 export default class Key extends PIXI.Graphics {
-  constructor({ color, pressColor, width, height }) {
+  constructor({ color, width, height }) {
     super()
-    this.$pressColor = pressColor
     this.$color = color
     this.$width = width
     this.$height = height
@@ -12,9 +11,9 @@ export default class Key extends PIXI.Graphics {
     this.$release()
   }
 
-  $press() {
+  $press(color) {
     this.clear()
-    this.beginFill(this.$pressColor)
+    this.beginFill(color)
     this.drawRect(0, 0, this.$width, this.$height)
     this.endFill()
   }

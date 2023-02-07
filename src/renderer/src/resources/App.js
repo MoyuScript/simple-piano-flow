@@ -4,6 +4,8 @@ import Piano from './objects/Piano'
 import JZZ from 'jzz'
 import store from '../redux/store'
 import FlowBar from './objects/FlowBar'
+import { object2Midi } from '../../../common/midi'
+import Color from 'color'
 
 export default class App extends PIXI.Application {
   constructor() {
@@ -29,25 +31,16 @@ export default class App extends PIXI.Application {
     this.stage.addChild(this.$flowBar)
 
     this.$_listenEvents()
-    this.$_subscribeStore()
-  }
-
-  $_subscribeStore() {
-    store.subscribe(() => {
-      const state = store.getState()
-      if (state.midi.fileData) {
-        this.$flowBar.$setMidiFile(state.midi.fileData)
-      }
-    })
   }
 
   $_listenEvents() {
     window.electron.ipcRenderer.on('midi/event', (_event, data) => {
-      const midi = JZZ.MIDI(data)
-
+      const midi = object2Midi(data)
       if (midi.isNoteOn()) {
         const note = midi.getNote()
-        this.$piano.$press(note)
+        const channel = midi.getChannel()
+        const color = Color(`hsl(${(channel / 15) * 360}, 100%, 50%)`).rgbNumber()
+        this.$piano.$press(note, color)
       } else if (midi.isNoteOff()) {
         const note = midi.getNote()
         this.$piano.$release(note)
