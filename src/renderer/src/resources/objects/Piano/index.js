@@ -8,12 +8,13 @@ export default class Piano extends PIXI.Container {
   constructor() {
     super()
 
+    this.$keyObjectMap = new Map()
     const keys = range(21, 109).map((noteNumber) => {
       const key = Piano.$isWhiteKey(noteNumber)
         ? Piano.$_createWhiteKey(noteNumber)
         : Piano.$_createBlackKey(noteNumber)
 
-      key.name = Piano.$buildKeyName(noteNumber)
+      this.$keyObjectMap.set(noteNumber, key)
       return key
     })
     this.addChild(...keys)
@@ -24,17 +25,13 @@ export default class Piano extends PIXI.Container {
   }
 
   $press(noteNumber) {
-    const key = this.getChildByName(Piano.$buildKeyName(noteNumber))
+    const key = this.$keyObjectMap.get(noteNumber)
     key.$press()
   }
 
   $release(noteNumber) {
-    const key = this.getChildByName(Piano.$buildKeyName(noteNumber))
+    const key = this.$keyObjectMap.get(noteNumber)
     key.$release()
-  }
-
-  static $buildKeyName(noteNumber) {
-    return `note-${noteNumber}`
   }
 
   static $_createBackground() {

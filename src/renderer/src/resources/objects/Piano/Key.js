@@ -7,6 +7,7 @@ export default class Key extends PIXI.Graphics {
     this.$color = color
     this.$width = width
     this.$height = height
+    this.$noteNumber = -1
 
     this.$release()
   }

@@ -2,7 +2,8 @@ import * as PIXI from 'pixi.js'
 import gsap from 'gsap'
 import Piano from './objects/Piano'
 import JZZ from 'jzz'
-import FlorBar from './objects/FlowBar'
+import store from '../redux/store'
+import FlowBar from './objects/FlowBar'
 
 export default class App extends PIXI.Application {
   constructor() {
@@ -17,13 +18,27 @@ export default class App extends PIXI.Application {
       this.ticker.update(currentTime)
     })
 
+    this.stage.sortableChildren = true
+
     this.$piano = new Piano()
     this.$piano.y = 550
+    this.$piano.zIndex = 10
     this.stage.addChild(this.$piano)
 
-    this.$flowBarMap = new Map()
+    this.$flowBar = new FlowBar({ pianoObject: this.$piano })
+    this.stage.addChild(this.$flowBar)
 
     this.$_listenEvents()
+    this.$_subscribeStore()
+  }
+
+  $_subscribeStore() {
+    store.subscribe(() => {
+      const state = store.getState()
+      if (state.midi.fileData) {
+        this.$flowBar.$setMidiFile(state.midi.fileData)
+      }
+    })
   }
 
   $_listenEvents() {
@@ -33,23 +48,9 @@ export default class App extends PIXI.Application {
       if (midi.isNoteOn()) {
         const note = midi.getNote()
         this.$piano.$press(note)
-
-        if (!this.$flowBarMap.has(note)) {
-          const x = this.$piano.getChildByName(Piano.$buildKeyName(note)).x
-          const flowBar = new FlorBar({ x: x + 6 })
-          this.$flowBarMap.set(note, flowBar)
-          this.stage.addChild(flowBar)
-        }
-
       } else if (midi.isNoteOff()) {
         const note = midi.getNote()
         this.$piano.$release(note)
-
-        const flowBar = this.$flowBarMap.get(note)
-        if (flowBar) {
-          flowBar.$end()
-          this.$flowBarMap.delete(note)
-        }
       }
     })
   }
