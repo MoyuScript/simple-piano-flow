@@ -6,7 +6,6 @@ export default class KeyWhite extends Key {
   constructor() {
     super({
       color: 0xffffff,
-      pressColor: 0xff0000,
       width: KeyWhite.$WIDTH,
       height: 150
     })

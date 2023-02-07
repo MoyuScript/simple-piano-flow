@@ -2,6 +2,7 @@
 import Layer from '../components/Layer'
 import { useSelector, useDispatch } from 'react-redux'
 import sliceMidi from '../../redux/slices/midi'
+import event, { EVENT_IMPORT_MIDI_FILE } from '../../event'
 
 export default function LayerUI() {
   const midiName = useSelector((state) => state.midi.name)
@@ -26,9 +27,8 @@ export default function LayerUI() {
       const uint8Array = new Uint8Array(arrayBuffer)
       const dataArray = Array.from(uint8Array)
 
-      await window.electron.ipcRenderer.invoke('midi/player/init', dataArray)
-      dispatch(sliceMidi.actions.setFileData(dataArray))
-
+      await window.electron.ipcRenderer.invoke('midi/init', dataArray)
+      event.emit(EVENT_IMPORT_MIDI_FILE, dataArray)
     } catch (err) {
       console.error(err)
       // User canceled the picker

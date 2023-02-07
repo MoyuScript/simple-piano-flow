@@ -24,9 +24,9 @@ export default class Piano extends PIXI.Container {
     this.addChild(background)
   }
 
-  $press(noteNumber) {
+  $press(noteNumber, color = 0xff0000) {
     const key = this.$keyObjectMap.get(noteNumber)
-    key.$press()
+    key.$press(color)
   }
 
   $release(noteNumber) {
